@@ -4,12 +4,16 @@ import { clearDataSignup, makeChangeSignup, submitDataSignup, toggleSeen } from 
 import { signupChangeValidate } from "../redux/actions/signup_action";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
+import { useState } from "react";
+import MyModal from "./Modal";
 
 const Signup = (props) => {
+    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const list = useSelector(state => state.signupChange.data);
     const error = useSelector(state => state.signupError.data);
     const toggleHandler = useSelector(state=>state.togglerEye);
+    
     return (
         <div id="signup_page" class="bg-gray-700 min-h-[570px] min-w-[340px] z-10 absolute ml-[550px] rounded-3xl mt-16">
             <div className="intro">
@@ -74,7 +78,12 @@ const Signup = (props) => {
                         <p class="text-red-500 text-xs text-start pl-[50px] p-1">{error.confirm_pasword}</p>
                     </div>
                     <div>
-                        <button onClick={(e)=>{dispatch(submitDataSignup(e,list));dispatch(clearDataSignup())}} class="mt-4 bg-lime-500 w-60 p-1 rounded-md font-semibold">Signup</button>
+                        <button onClick={(e)=>{
+                            dispatch(submitDataSignup(e,list, error.valid));
+                            dispatch(clearDataSignup());
+                            setOpen(true);
+                            }} class="mt-4 bg-lime-500 w-60 p-1 rounded-md font-semibold">Signup</button>
+                        {open&&<MyModal open={open} setOpen={setOpen}/>}
                     </div>
                 </form>
             </div>

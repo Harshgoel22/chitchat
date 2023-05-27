@@ -1,12 +1,36 @@
 import {SIGNUP_CHANGE_VALIDATE, MAKE_CHANGE_SIGNUP, SUBMIT_DATA_SIGNUP} from "./action_types";
 import { CLEAR_DATA_SIGNUP, TOGGLE_SEEN } from "./action_types";
 
-const signupChangeValidate = ({name, value}, prev='')=> {
-    return {
-        type: SIGNUP_CHANGE_VALIDATE, 
-        name: name,
-        prev: prev,
-        value: value
+const signupChangeValidate =  ({name, value}, prev='')=> {
+    return async function(dispatch){
+        try{
+            const bool = await (await fetch('http://localhost:5000/getdata',{
+                method: 'POST',
+                body: JSON.stringify({name: name, value: value}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })).json();
+            console.log("bool -> ",bool);
+            const valid = (bool.length===0)?true:false;
+            console.log("valid -> ",valid);
+            dispatch({
+                type: SIGNUP_CHANGE_VALIDATE, 
+                name: name,
+                prev: prev,
+                value: value,
+                check: valid
+            }) 
+        }catch(e){
+            console.log(e);
+            dispatch({
+                type: SIGNUP_CHANGE_VALIDATE, 
+                name: name,
+                prev: prev,
+                value: value,
+                check: false
+            })
+        }
     }
 }
 
@@ -26,11 +50,31 @@ const toggleSeen = (id, name) => {
     }
 }
 
-const submitDataSignup = (e, data) => {
-    return {
-        type: SUBMIT_DATA_SIGNUP,
-        event: e,
-        payload: data
+const submitDataSignup = (e, data, valid) => {
+    return async function(dispatch){
+        try{
+            fetch('http://localhost:5000/signup',{
+                method: 'POST',
+                body: JSON.stringify({data, valid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            dispatch({
+                type: SUBMIT_DATA_SIGNUP,
+                event: e,
+                loading: false,
+                error: ''
+            })
+        }catch(err){
+            console.log("Error in submit_data_signup.js");
+            dispatch({
+                type: SUBMIT_DATA_SIGNUP,
+                event: e,
+                loading: false,
+                error: 'glitch in database!'
+            })
+        }
     }
 }
 

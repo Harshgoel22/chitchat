@@ -13,7 +13,8 @@ const initialState = {
         username: '',
         email: '',
         pasword: '',
-        confirm_pasword: ''
+        confirm_pasword: '',
+        valid: false
     }
 }
 
@@ -23,16 +24,25 @@ const reducer1 = (state=initialState, action)=> {
         case SIGNUP_CHANGE_VALIDATE: 
             if(action.value===''){
                 state.data[action.name] = 'Required field...!';
+            }else if(action.name==='fname'){
+                state.data.fname = '';
+            }else if(action.name==='lname'){
+                state.data.lname = '';
             }else if(action.name==='username'){
-                state.data.username = regExp.username.test(action.value)?'':'Invalid username! Atleast 6 characters';
+                console.log("action.check -> ", action.check);
+                state.data.username = regExp.username.test(action.value)&&action.check?'':'Invalid username! Atleast 6 characters';  
+                if(!action.check) state.data.username = action.check===false?'Username already taken!':'';
             }else if(action.name==='email'){
-                state.data.email = regExp.email.test(action.value)?'':'Invalid email! Atleast 12 characters';
+                state.data.email = regExp.email.test(action.value)&&action.check?'':'Invalid email! Atleast 12 characters';
+                if(!action.check) state.data.email = action.check===false?'Email already taken!':'';
             }else if(action.name==='pasword'){
                 state.data.pasword = regExp.pasword.test(action.value)?'':'Invalid password! Atleast 8 characters';
             }else if(action.name==='confirm_pasword'){
                 // console.log("prev => ", action.prev);
                 state.data.confirm_pasword = (action.value===action.prev)?'':'Different password and confirm password!';
             }
+            const {fname, lname, username, email, pasword, confirm_pasword} = state.data;
+            state.data.valid = (fname || lname || username || email || pasword || confirm_pasword)? false: true;
             return {
                 ...state,
                 data: {
