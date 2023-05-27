@@ -1,7 +1,8 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 //mongoDB setup
-const DB = 'mongodb+srv://root:admin@cluster0.y4ep6st.mongodb.net/chitchat?retryWrites=true&w=majority';
+const DB = process.env.REACT_APP_URI;
 
 mongoose.connect(DB,{
     useNewUrlParser: true,
