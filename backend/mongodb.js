@@ -18,9 +18,20 @@ const objectSchema = new Schema({
     username: {type: String, required: true, unique: true},
     email: {type: String, required: true, unique: true},
     pasword: {type: String, required: true},
-    confirm_pasword: {type: String, required: true}
+    confirm_pasword: {type: String, required: true},
+    recentTab: {type: String, default: 'No'},
+    messages: [{
+        username: {type: String},
+        data: [{
+            msg:  {type: String},
+            send: {type: String}
+        }]
+    }],
+    tokens: [{
+        token: {type: String, required: true}
+    }]
 })
 
 const student = mongoose.model("student",objectSchema);
 
-module.exports = student;
+module.exports = {student,objectSchema};

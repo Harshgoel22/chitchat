@@ -42,20 +42,19 @@ const makeChangeSignup = ({name, value})=> {
     }
 }
 
-const toggleSeen = (id, name) => {
+const toggleSeen = (id) => {
     return {
         type: TOGGLE_SEEN,
-        id: id,
-        name: name
+        id: id
     }
 }
 
-const submitDataSignup = (e, data, valid) => {
+const submitDataSignup = (e, data, valid1, valid2) => {
     return async function(dispatch){
         try{
             fetch('http://localhost:5000/signup',{
                 method: 'POST',
-                body: JSON.stringify({data, valid}),
+                body: JSON.stringify({data, valid1, valid2}),
                 headers: {
                     'Content-Type': 'application/json'
                 }

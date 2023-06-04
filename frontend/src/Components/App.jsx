@@ -10,7 +10,7 @@ const App= () => {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Home/>}></Route>
-                    <Route path='/DashBoard' element={<DashBoard/>}></Route>
+                    <Route path='/DashBoard/:id' element={<DashBoard/>}></Route>
                 </Routes>
             </BrowserRouter>
         </Provider>

@@ -37,6 +37,9 @@ const reducer1 = (state=initialState, action)=> {
                 if(!action.check) state.data.email = action.check===false?'Email already taken!':'';
             }else if(action.name==='pasword'){
                 state.data.pasword = regExp.pasword.test(action.value)?'':'Invalid password! Atleast 8 characters';
+                if(action.prev!==''){
+                    state.data.confirm_pasword = (action.value===action.prev)?'':'Different password and confirm password!';
+                }
             }else if(action.name==='confirm_pasword'){
                 // console.log("prev => ", action.prev);
                 state.data.confirm_pasword = (action.value===action.prev)?'':'Different password and confirm password!';

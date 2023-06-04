@@ -19,7 +19,7 @@ const Home = () => {
         }
     }
     return (
-        <div class="bg-gradient-to-br from-gray-800 to-gray-400 min-h-screen overflow-x-hidden overflow-y-hidden relative flex flex-row">
+        <div class="bg-gradient-to-br from-gray-800 to-gray-400 min-h-screen relative flex flex-row">
             <div className="text" class="max-w-lg">
                 <img src={logo} alt="logo" class="h-20 mt-8 ml-8"></img>
                 <p class="text-white text-5xl font-bold mt-40 ml-16">Hang out <p class="pt-2">anytime, anywhere</p></p>

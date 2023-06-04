@@ -6,16 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 import MyModal from "./Modal";
+import { useNavigate } from "react-router-dom";
 
 const Signup = (props) => {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
-    const list = useSelector(state => state.signupChange.data);
+    const list = useSelector(state => state.signupChange);
     const error = useSelector(state => state.signupError.data);
     const toggleHandler = useSelector(state=>state.togglerEye);
+    const navigate = useNavigate();
     
     return (
-        <div id="signup_page" class="bg-gray-700 min-h-[570px] min-w-[340px] z-10 absolute ml-[550px] rounded-3xl mt-16">
+        <div id="signup_page" class="bg-gray-700 min-h-[570px] min-w-[340px] z-10 absolute pb-6 left-[550px] rounded-3xl mt-16">
             <div className="intro">
                 <p class="text-white text-xl text-center pt-8 font-semibold">Welcome to our community</p>
                 <div class="pt-8 flex justify-center"><Avatar/></div>
@@ -25,14 +27,14 @@ const Signup = (props) => {
                 <form>
                     <div class="flex relative ml-[50px]">
                         <div class="mt-2">
-                            <input type="text" name="fname" value={list.fname} onChange={(event)=>{
+                            <input type="text" name="fname" value={list.data.fname} onChange={(event)=>{
                                 dispatch(makeChangeSignup(event.target));
                                 dispatch(signupChangeValidate(event.target))
                             }} placeholder="Firstname" class="bg-gray-300 placeholder:text-slate-500 placeholder:text-center rounded-md mt-8 mr-2 p-[1px] w-[110px]"></input>
                             <p id="fname" class="text-red-500 text-xs text-start p-1">{error.fname}</p>
                         </div>
                         <div class="mt-6">
-                            <input type="text" name="lname" value={list.lname} onChange={event=>{
+                            <input type="text" name="lname" value={list.data.lname} onChange={event=>{
                                 dispatch(makeChangeSignup(event.target));
                                 dispatch(signupChangeValidate(event.target))
                             }} placeholder="Lastname" class="bg-gray-300 placeholder:text-slate-500 placeholder:text-center rounded-md mt-4 ml-2 p-[1px] w-[110px]"></input><br/>
@@ -40,14 +42,14 @@ const Signup = (props) => {
                         </div>
                     </div>
                     <div>
-                        <input type="text" name="username" value={list.username} onChange={event=>{
+                        <input type="text" name="username" value={list.data.username} onChange={event=>{
                             dispatch(makeChangeSignup(event.target));
                             dispatch(signupChangeValidate(event.target))
                         }} placeholder="Username" class="bg-gray-300 placeholder:text-slate-500 placeholder:text-center rounded-md mt-2 p-[1px] w-60"></input><br/>
                         <p id="username" class="text-red-500 text-xs text-start pl-[50px] p-1">{error.username}</p>
                     </div>
                     <div>
-                        <input type="email" name="email" value={list.email} onChange={event=>{
+                        <input type="email" name="email" value={list.data.email} onChange={event=>{
                             dispatch(makeChangeSignup(event.target));
                             dispatch(signupChangeValidate(event.target))
                         }} placeholder="Email" class="bg-gray-300 placeholder:text-slate-500 placeholder:text-center rounded-md mt-2 p-[1px] w-60"></input><br/>
@@ -55,9 +57,9 @@ const Signup = (props) => {
                     </div>
                     <div class="relative">
                         <div class="relative">
-                            <input id="pasword" type="password" name="pasword" value={list.pasword} onChange={event=>{
+                            <input id="pasword" type="password" name="pasword" value={list.data.pasword} onChange={event=>{
                                 dispatch(makeChangeSignup(event.target));
-                                dispatch(signupChangeValidate(event.target))
+                                dispatch(signupChangeValidate(event.target, list.data.confirm_pasword))
                             }} placeholder="Password" class="bg-gray-300 placeholder:text-slate-500 placeholder:text-center rounded-md mt-2 p-[1px] w-60"></input>
                             <button class="absolute top-2 right-14" onClick={(e)=>{dispatch(toggleSeen("pasword"));e.preventDefault()}}>
                                 {toggleHandler.pasword?<FontAwesomeIcon icon={faEyeSlash} />:<FontAwesomeIcon icon={faEye} />}
@@ -67,9 +69,9 @@ const Signup = (props) => {
                     </div>
                     <div class="relative">
                         <div class="relative">
-                            <input id="confirm_pasword" type="password" name="confirm_pasword" value={list.confirm_pasword} onChange={event=>{
+                            <input id="confirm_pasword" type="password" name="confirm_pasword" value={list.data.confirm_pasword} onChange={event=>{
                                 dispatch(makeChangeSignup(event.target));
-                                dispatch(signupChangeValidate(event.target, list.pasword))
+                                dispatch(signupChangeValidate(event.target, list.data.pasword))
                             }} placeholder="Confirm Password" class="bg-gray-300 placeholder:text-slate-500 placeholder:text-center rounded-md mt-2 p-[1px] w-60"></input>
                             <button class="absolute top-2 right-14" onClick={(e)=>{dispatch(toggleSeen("confirm_pasword"));e.preventDefault()}}>
                                 {toggleHandler.confirm_pasword?<FontAwesomeIcon icon={faEyeSlash} />:<FontAwesomeIcon icon={faEye} />}
@@ -79,9 +81,14 @@ const Signup = (props) => {
                     </div>
                     <div>
                         <button onClick={(e)=>{
-                            dispatch(submitDataSignup(e,list, error.valid));
-                            dispatch(clearDataSignup());
-                            setOpen(true);
+                            setOpen(()=>{
+                                dispatch(submitDataSignup(e, list.data, error.valid, list.valid));
+                                if(error.valid&&list.valid){
+                                    navigate(`/DashBoard/${list.data.username}`);
+                                }
+                                dispatch(clearDataSignup());
+                                return (error.valid&&list.valid)?false:true;
+                            });
                             }} class="mt-4 bg-lime-500 w-60 p-1 rounded-md font-semibold">Signup</button>
                         {open&&<MyModal open={open} setOpen={setOpen}/>}
                     </div>
