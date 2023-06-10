@@ -19,12 +19,18 @@ const objectSchema = new Schema({
     email: {type: String, required: true, unique: true},
     pasword: {type: String, required: true},
     confirm_pasword: {type: String, required: true},
-    recentTab: {type: String, default: 'No'},
+    online: {type: String, default: 'No'},
+    recentTab: [{
+        username: {type: String},
+        fname: {type: String},
+        lname: {type: String}
+    }],
     messages: [{
         username: {type: String},
         data: [{
             msg:  {type: String},
-            send: {type: String}
+            sent: {type: String},
+            unique: {type: String}
         }]
     }],
     tokens: [{

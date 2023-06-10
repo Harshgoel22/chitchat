@@ -7,6 +7,8 @@ import reducer6 from './login/toggleSeenLogin';
 import reducer7 from './login/login_change_validate';
 import reducer8 from './login/submit_login_data';
 import { reducer9 } from './message/onChange_Search';
+import { reducer10 } from './message/updateOnline';
+import { reducer11 } from './signup/otp_handler';
 
 const redux = require('redux');
 const combineReducers = redux.combineReducers;
@@ -20,7 +22,9 @@ const rootReducer = combineReducers({
     toggleSeenLogin: reducer6,
     loginchangeValidate: reducer7,
     submitDataLogin: reducer8,
-    onChangeSearch: reducer9
+    onChangeSearch: reducer9,
+    updateOnline: reducer10,
+    verifyEmail: reducer11
 });
 
 export default rootReducer;

@@ -1,4 +1,4 @@
-import logo from '../images/chitchat_logo.png';
+import logo from '../../images/chitchat_logo.png'
 import Login from './Login';
 import Signup from './Signup';
 
@@ -19,13 +19,13 @@ const Home = () => {
         }
     }
     return (
-        <div class="bg-gradient-to-br from-gray-800 to-gray-400 min-h-screen relative flex flex-row">
-            <div className="text" class="max-w-lg">
-                <img src={logo} alt="logo" class="h-20 mt-8 ml-8"></img>
-                <p class="text-white text-5xl font-bold mt-40 ml-16">Hang out <p class="pt-2">anytime, anywhere</p></p>
-                <p class="text-white ml-16 mt-8 text-lg">ChitChat makes it easy and fun to stay close to your favourite people.</p>
+        <div className="bg-gradient-to-br from-gray-800 to-gray-400 min-h-screen relative flex flex-row">
+            <div className="text max-w-lg">
+                <img src={logo} alt="logo" className="h-20 mt-8 ml-8"></img>
+                <p className="text-white text-5xl font-bold mt-40 ml-16">Hang out <p className="pt-2">anytime, anywhere</p></p>
+                <p className="text-white ml-16 mt-8 text-lg">ChitChat makes it easy and fun to stay close to your favourite people.</p>
             </div>
-            <div className="signup_login" class="flex max-w-md relative">
+            <div className="signup_login flex max-w-md relative">
                 <Login manageUser={manageUser}/>
                 <Signup manageUser={manageUser}/>
             </div>

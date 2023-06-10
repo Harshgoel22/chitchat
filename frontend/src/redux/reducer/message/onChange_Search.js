@@ -1,8 +1,9 @@
-import { ON_CHANGE_SEARCH, UPDATE_RECENT_TAB } from "../../actions/action_types";
+import { DELETE_CARD, DELETE_MSG, ON_CHANGE_SEARCH, SEND_MSG, UPDATE_MSG_LIST, UPDATE_RECENT_TAB } from "../../actions/action_types";
 
 const initialState = {
     payload: [],
-    msgData: {}
+    msgData: {},
+    chatData: []
 }
 
 export const reducer9 = (state=initialState,action)=>{
@@ -16,6 +17,27 @@ export const reducer9 = (state=initialState,action)=>{
             return {
                 ...state,
                 msgData: action.data
+            }
+        case UPDATE_MSG_LIST:
+            return {
+                ...state,
+                chatData: [...action.list]
+            }
+        case DELETE_CARD:
+            return {
+                ...state,
+                payload: [...action.data],
+                msgData: action.msgData
+            }
+        case DELETE_MSG:
+            return {
+                ...state,
+                chatData: [...action.data]
+            }
+        case SEND_MSG:
+            return{
+                ...state,
+                chatData: [...action.data]
             }
         default:
             return state;

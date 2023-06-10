@@ -49,16 +49,18 @@ const toggleSeen = (id) => {
     }
 }
 
-const submitDataSignup = (e, data, valid1, valid2) => {
+const submitDataSignup = (e, data, valid1, valid2, cond) => {
     return async function(dispatch){
         try{
-            fetch('http://localhost:5000/signup',{
-                method: 'POST',
-                body: JSON.stringify({data, valid1, valid2}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            if(cond==="Verified"){
+                fetch('http://localhost:5000/signup',{
+                    method: 'POST',
+                    body: JSON.stringify({data, valid1, valid2}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+            }
             dispatch({
                 type: SUBMIT_DATA_SIGNUP,
                 event: e,
